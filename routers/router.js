@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const {signUp, logIn, createData, getOneData, logOut, deleteImages} = require('../controllers/taskController')
+const {signUp, logIn, createData, getOneData, logOut, deleteImages} = require('../controllers/infoController')
 const {userAuthentication} = require('../middleware/auth');
 //const mediaUpload = require('../middleware/multer');
 

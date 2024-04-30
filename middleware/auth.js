@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const {userModel} = require('../Models/taskModel')
+const {userModel} = require('../Models/infoModel');
+const { timeout } = require('cron');
 require('dotenv').config();
 
 const userAuthentication = async(req,res, next)=>{
@@ -22,6 +23,11 @@ const userAuthentication = async(req,res, next)=>{
 
         next()
     } catch (error) {
+        if (err instanceof jwt.JsonWebTokenError){
+            return res.status(501).json({
+                message: 'Session timeout, please login to continue'
+            })
+        }
         return res.status(500).json({
             Error: "error authenticating: " +error.message,
         })
@@ -29,4 +35,18 @@ const userAuthentication = async(req,res, next)=>{
 
 }
 
-module.exports= {userAuthentication}
+//Authorized users to getAll Information
+
+const admin = (req, res, next)=>{
+    userAuthentication(req, res, async()=>{
+        if(req.user.isAdmin){
+            next()
+        } else {
+            return res.status(400).json({
+                message: "Not an Admin! You are not authorized"
+            })
+        }
+    })
+}
+
+module.exports= {userAuthentication, admin}

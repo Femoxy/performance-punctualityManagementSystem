@@ -13,7 +13,7 @@ app.use(fileUpload({
 app.use(express.json());
 
 app.get('/', (req, res) =>{
-    res.send('Get Your location')
+    res.send('Welcome to The Curve Africa Performance Management System')
 })
  
 app.use(router)
